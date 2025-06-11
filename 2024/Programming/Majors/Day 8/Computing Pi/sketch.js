@@ -7,7 +7,7 @@ function setup() {
   background(255);
   fill(0);
   stroke(255);
-  //circle(0,400,width);
+  // circle(0,400,width);
 }
 
 function draw() {
