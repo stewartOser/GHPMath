@@ -6,7 +6,8 @@
 - Access the resources of your choice from that folder
 
 ## File Structure
-- Folders are labeled by year
-- Subfolders to those are labeled by class
-- Subfolders to those are labeled by Majors or Minors
-- Subfolders to those are labeled by Day
+- Year
+    - Class
+        - Group
+            - Day
+
