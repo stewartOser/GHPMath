@@ -10,3 +10,7 @@
 ## Current Tech
 - Stewart
 
+## General Resources
+This repository currently holds the following items as General Resources:
+1. LaTeX Guides
+
