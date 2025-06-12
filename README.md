@@ -11,3 +11,12 @@
         - Group
             - Day
 
+## Current Instructors
+- Dennis
+- David
+- Bill
+- Vinton
+
+## Current Tech
+- Stewart
+
