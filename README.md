@@ -13,4 +13,7 @@
 ## General Resources
 This repository currently holds the following items as General Resources:
 1. LaTeX Guides
+2. Project Euler -- Prime Sieve Jupyter Notebook
+3. Programming
+    a. Day 1 Project (Rectangles)
 
