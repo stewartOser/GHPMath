@@ -1,6 +1,6 @@
 from simulation import Model, run_simulation
 
-model = Model("SIR Model")
+model = Model("SIRS Model")
 
 SUSCEPTIBLE = model.add_state("Susceptible", (52, 152, 219), 999)
 INFECTED    = model.add_state("Infected",    (231, 76, 60),    1)
