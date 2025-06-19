@@ -13,10 +13,11 @@ clock = pygame.time.Clock()
 PERSON_RADIUS = 5
 
 class State:
-    def __init__(self, name, color, number=0):
+    def __init__(self, name, color, number=0, moving=True):
         self.color = color
         self.name = name
         self.number = number
+        self.moving = moving
 
 class Transition:
     def __init__(self, from_state, to_state, probability, requires_proximity=False, contact_with=None, effect_radius=5):
@@ -52,8 +53,8 @@ class Model:
         self.states = []
         self.transitions = []
 
-    def add_state(self, name, color, number=0):
-        state = State(name, color, number)
+    def add_state(self, name, color, number=0, moving=True):
+        state = State(name, color, number, moving)
         self.states.append(state)
         return state
 
@@ -96,6 +97,8 @@ class Person:
         self.close_infected = []
 
     def move(self):
+        if not self.state.moving:
+            return
         self.x = self.x + self.vx
         self.y = self.y + self.vy
 
