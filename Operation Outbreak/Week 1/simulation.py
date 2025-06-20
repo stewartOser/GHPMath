@@ -9,28 +9,42 @@ HEIGHT = 600
 GRID_SIZE = 20
 SCREEN_WIDTH = WIDTH + 400
 SCREEN_HEIGHT = HEIGHT + 60
-clock = pygame.time.Clock()
 PERSON_RADIUS = 5
 
+clock = pygame.time.Clock()
+
 class State:
-    def __init__(self, name, color, number=0, moving=True):
+    def __init__(self, name, color, number=0, moving=True, effect_radius=PERSON_RADIUS, show_cloud=False, isolated=False):
         self.color = color
         self.name = name
         self.number = number
         self.moving = moving
+        self.effect_radius = effect_radius
+        self.show_cloud = show_cloud
+        self.isolated = isolated
 
 class Transition:
-    def __init__(self, from_state, to_state, probability, requires_proximity=False, contact_with=None, effect_radius=5):
+    def __init__(self, from_state, to_state, probability, requires_proximity=False, contact_with=None, effect_radius=5, min_required=0):
         self.from_state = from_state
         self.to_state = to_state
         self.probability = probability
         self.requires_proximity = requires_proximity
         self.contact_with = contact_with
-        self.effect_radius = effect_radius
+        self.effect_radius = self.to_state.effect_radius
+        self.min_infected = min_required
+        self.min_reached = False
 
-    def attempt(self, person, neighbors):
+    def attempt(self, person, neighbors, people):
+        
         if person.state != self.from_state:
             return
+        
+        if self.min_infected > 0:
+            num_infected = sum(1 for p in people if p.state == self.contact_with)
+            if num_infected < self.min_infected:
+                if not self.min_reached:
+                    return
+            self.min_reached = True
 
         if self.requires_proximity:
             for other in neighbors:
@@ -47,24 +61,24 @@ class Transition:
             if random.random() <= self.probability:
                 person.state = self.to_state
 
-class Model:
+class Model:    
     def __init__(self, name="Generic Model"):
         self.name = name
         self.states = []
         self.transitions = []
 
-    def add_state(self, name, color, number=0, moving=True):
-        state = State(name, color, number, moving)
+    def add_state(self, name, color, number=0, moving=True, show_cloud=False, effect_radius=5, isolated=False):
+        state = State(name, color, number, moving, effect_radius, show_cloud, isolated)
         self.states.append(state)
         return state
 
-    def add_transition(self, from_state, to_state, probability, requires_proximity=False, contact_with=None, effect_radius=5):
-        t = Transition(from_state, to_state, probability, requires_proximity, contact_with, effect_radius)
+    def add_transition(self, from_state, to_state, probability, requires_proximity=False, contact_with=None, effect_radius=5, min_required=0):
+        t = Transition(from_state, to_state, probability, requires_proximity, contact_with, effect_radius, min_required)
         self.transitions.append(t)
 
-    def apply_transitions(self, person, neighbors):
+    def apply_transitions(self, person, neighbors, people):
         for t in self.transitions:
-            t.attempt(person, neighbors)
+            t.attempt(person, neighbors, people)
 
     def count_states(self, people):
         counts = {state: 0 for state in self.states}
@@ -89,6 +103,8 @@ class Person:
         self.state = state
         self.x = random.randint(25, WIDTH)
         self.y = random.randint(25, HEIGHT)
+        self.has_moved_to_isolation = False
+        self.was_isolated = False
 
         self.tmin = 30
         self.tmax = 60
@@ -102,11 +118,40 @@ class Person:
         self.x = self.x + self.vx
         self.y = self.y + self.vy
 
-        if (self.x >= WIDTH) or (self.x <= 28):
-            self.vx = -1 * self.vx
+        if not self.state.isolated:
+            if self.was_isolated:
+                self.x = random.randint(25, WIDTH)
+                self.y = random.randint(25, HEIGHT)
+                self.was_isolated = False
+                
+            if (self.x >= WIDTH) or (self.x <= 30):
+                self.vx = -self.vx
+                if self.x >= WIDTH:
+                    self.x = self.x - PERSON_RADIUS
+                if self.x <= 30:
+                    self.x = self.x + PERSON_RADIUS
 
-        if (self.y >= HEIGHT) or (self.y <= 28):
-            self.vy = -1 * self.vy
+            if (self.y >= HEIGHT) or (self.y <= 30):
+                self.vy = -self.vy
+                if self.y >= HEIGHT:
+                    self.y = self.y - PERSON_RADIUS
+                if self.y <= 30:
+                    self.y = self.y + PERSON_RADIUS
+            
+        if self.state.isolated:
+            if (self.x <= WIDTH + 50) or (self.x >= (WIDTH / 3) + WIDTH + 50):
+                self.vx = -self.vx
+                if self.x >= (WIDTH / 3) + WIDTH + 50:
+                    self.x = self.x - PERSON_RADIUS
+                if self.x <= WIDTH + 50:
+                    self.x = self.x + PERSON_RADIUS
+
+            if (self.y <= HEIGHT - (HEIGHT / 3) + 30) or (self.y >= (HEIGHT / 3) + HEIGHT - (HEIGHT / 3)):
+                self.vy = -self.vy
+                if self.y >= (HEIGHT / 3) + HEIGHT - (HEIGHT / 3) + 30:
+                    self.y = self.y - PERSON_RADIUS
+                if self.y <= HEIGHT - (HEIGHT / 3):
+                    self.y = self.y + PERSON_RADIUS
 
     def change_direction(self):
         v_mag = 0.4 * random.random() + 0.8
@@ -131,7 +176,11 @@ class Person:
 
     def draw(self, screen):
         pygame.draw.circle(screen, color=self.get_color(),
-                               center=(self.x, self.y), radius=PERSON_RADIUS, width=0)
+                           center=(self.x, self.y), radius=PERSON_RADIUS, width=0)
+        
+        if self.state.show_cloud:
+            pygame.draw.circle(screen, color=self.get_color(),
+                               center=(self.x, self.y), radius=self.state.effect_radius, width=1)
 
 def partition_people(people):
     """Partition people into grid cells for spatial partitioning."""
@@ -165,7 +214,11 @@ def run_simulation(model):
     people = model.generate_people(WIDTH, HEIGHT)
 
     WHITE = (255, 255, 255)
-
+    
+    exist_isolated = False
+    for s in model.states:
+        if s.isolated:
+            exist_isolated = True
 
     while running:
         frames += 1
@@ -189,9 +242,21 @@ def run_simulation(model):
             person.draw(screen)
             person.update()
             person.move()
+            
+            if person.state.isolated:
+                if not person.has_moved_to_isolation:
+                    person.was_isolated = True
+                    person.x = random.randint(WIDTH + 60, int((WIDTH / 3) + WIDTH + 20))
+                    person.y = random.randint(int(HEIGHT - (HEIGHT / 3) + 15), int((HEIGHT / 3) + HEIGHT - (HEIGHT / 3)))
+                    person.has_moved_to_isolation = True
+            else:
+                person.has_moved_to_isolation = False
 
             neighbors = get_neighbors(grid, person)
-            model.apply_transitions(person, neighbors)
+            model.apply_transitions(person, neighbors, people)
+            
+        if exist_isolated:
+            pygame.draw.rect(screen, color=WHITE, rect=(WIDTH + 40, HEIGHT - (HEIGHT / 3), WIDTH / 3 + 15, HEIGHT / 3 + 15), width=5)
 
         counts = model.count_states(people)
 
