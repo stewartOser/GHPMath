@@ -3,7 +3,7 @@ from simulation import Model, run_simulation
 model = Model("SIRD Model")
 
 SUSCEPTIBLE = model.add_state("Susceptible", (52, 152, 219), 999)
-INFECTED    = model.add_state("Infected",    (231, 76, 60),    1)
+INFECTED    = model.add_state("Infected",    (231, 76, 60),    1,     effect_radius=7, show_cloud=True)
 RECOVERED   = model.add_state("Recovered",   (142, 68, 173))
 DECEASED    = model.add_state("Deceased",    (70, 70, 70), moving=False)
 
@@ -13,7 +13,6 @@ model.add_transition(
     probability=0.03,
     requires_proximity=True,
     contact_with=INFECTED,
-    effect_radius=7
     )
 
 model.add_transition(
