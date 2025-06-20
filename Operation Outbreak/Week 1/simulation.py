@@ -40,7 +40,7 @@ class Transition:
             return
         
         if self.min_infected > 0:
-            num_infected = sum(1 for p in people if p.state == self.contact_with)
+            num_infected = sum(1 for p in people if p.state == self.from_state)
             if num_infected < self.min_infected:
                 if not self.min_reached:
                     return
