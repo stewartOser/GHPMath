@@ -1,11 +1,11 @@
 import matplotlib.pyplot as plt
 
 t = 0           # initial time
-P = 0.5         # initial population
+P = 10          # initial population
 
 k = 0.6         # rate constant
 N = 20          # carrying capacity
-h = 0.2925      # harvesting rate
+h = 3           # harvesting rate
 
 dt = 0.01       # time step
 t_final = 15    # final time
@@ -27,7 +27,7 @@ plt.xlabel("Time")
 plt.ylabel("Population")
 plt.title("Unrestricted population growth")
 # plt.xlim((-5,20))
-plt.ylim((0,20))
+plt.ylim((-10,30))
 
 plt.legend()
 plt.show()
