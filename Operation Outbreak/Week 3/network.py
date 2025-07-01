@@ -5,16 +5,15 @@ from SIR_network import model
 nw = Network(model)
 nw.add_nodes(5, "Susceptible")   # Add 5 nodes with initial state "Susceptible"
 nw.set_state(0, "Infected")      # Initial state for node 0
-nw.add_edges(                    # Define edges between nodes
-    (0, 1),
-    (1, 2),
-    (1, 3),
-    (3, 4)
-)
+
+for i in range(5):
+    for j in range(i + 1, 5):
+        nw.add_edges((i, j))  # Fully connect the nodes
 
 # Show how to print information about the underlying graph
 g = nw.get_nx_graph()
 print(g.nodes)
 
-run_simulation(model, nw, num_frames=10)
+print(g.degree())
 
+run_simulation(model, nw, num_frames=10)
