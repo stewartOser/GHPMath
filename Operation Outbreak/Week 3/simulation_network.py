@@ -54,14 +54,23 @@ class Network:
             self.add_node(i, state_name)
 
     def add_edges(self, *edges):
-        self.graph.add_edges_from(edges)
+        new_edges = []
+        for edge in edges:
+            edge = (edge[0] - 1, edge[1] - 1)
+            new_edges.append(edge)
+        new_edges = tuple(new_edges)
+
+        mapping = {node: i + 1 for i, node in enumerate(self.graph.nodes)}
+        self.graph.add_edges_from(new_edges)
+        self.graph = nx.relabel_nodes(self.graph, mapping)
+
 
     def set_state(self, node_ids, state_name):
         if isinstance(node_ids, list):
             for node_id in node_ids:
-                self.graph.nodes[node_id]['state'] = state_name
+                self.graph.nodes[node_id-1]['state'] = state_name
         else:
-            self.graph.nodes[node_ids]['state'] = state_name
+            self.graph.nodes[node_ids-1]['state'] = state_name
 
     def get_state(self, node_id):
         return self.graph.nodes[node_id]['state']
