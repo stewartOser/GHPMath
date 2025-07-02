@@ -31,4 +31,4 @@ for i in range(n):
                         if 1 <= new_neighbor <= n and 1 <= current_node <= n:
                             nw.add_edges((current_node, new_neighbor))
 
-run_simulation(model, nw, num_frames=10, show_labels=False)
+run_simulation(model, nw, num_frames=10, show_labels=False, display_stats=True)

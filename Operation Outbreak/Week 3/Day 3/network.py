@@ -17,4 +17,4 @@ nw.add_edges(
     (5,6)
 )
 
-run_simulation(model, nw, num_frames=10, layout="circular")
+run_simulation(model, nw, num_frames=10, layout="spring")

@@ -2,8 +2,8 @@ from simulation_network import run_simulation, Network
 from SIR_network import model
 import random
 
-n = 50
-m = 1
+n = 500
+m = 2
 assert m < n
 
 nw = Network(model)
@@ -26,4 +26,4 @@ for new_node in range(m + 2, n + 1):
     for target in targets:
         nw.add_edges((new_node, target))
 
-run_simulation(model, nw, num_frames=10, show_labels=False)
+run_simulation(model, nw, num_frames=10, show_labels=False, display_stats=True)
