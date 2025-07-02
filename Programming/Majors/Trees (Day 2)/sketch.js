@@ -2,7 +2,7 @@ let slider;
 let change;
 
 function setup() {
-    createCanvas(800, 800);
+    createCanvas(windowWidth, windowHeight);
     angleMode(DEGREES);
 
     slider = createSlider(0, 180, 90, 5);
@@ -19,7 +19,7 @@ function draw() {
     stroke(0);
     strokeWeight(2);
 
-    let base = 300;
+    let base = 400;
     line(width/2, height, width/2, height-base);
 
     let level    = 0;
@@ -34,26 +34,21 @@ function branch(base, angle, level, maxLevel, startx, starty) {
     }
 
     let newBase = base / 2;
-    angle       = angle - change;
+    angle = angle - change;
     let endx = startx + cos(angle)*newBase;
     let endy = starty - sin(angle)*newBase;
     line(startx, starty, endx, endy)
 
     branch(newBase, angle, level + 1, maxLevel, endx, endy);
-    
-    angle = angle + change;
+
+    newBase = base / 2;
+    angle = angle + 2*change;
     endx = startx + cos(angle)*newBase;
     endy = starty - sin(angle)*newBase;
     line(startx, starty, endx, endy)
 
     branch(newBase, angle, level + 1, maxLevel, endx, endy);
-
-    angle = angle + change;
-    endx = startx + cos(angle)*newBase;
-    endy = starty - sin(angle)*newBase;
-    line(startx, starty, endx, endy)
-
-    branch(newBase, angle, level + 1, maxLevel, endx, endy);
+  
 
     console.log(level, angle);
 }

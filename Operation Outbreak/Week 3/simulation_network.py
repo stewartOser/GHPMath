@@ -77,6 +77,30 @@ class Network:
 
     def get_nx_graph(self):
         return self.graph
+    
+class OutbreakGraph:
+
+    def __init__(self, graph):
+        self.graph = graph
+
+    def degree(self):
+        return self.graph.degree()
+
+    def average_neighbor_degree(self):
+        return nx.average_neighbor_degree(self.graph)
+    
+    def average_degree_connectivity(self):
+        return nx.average_degree_connectivity(self.graph)
+    
+    def node_degree(self, node):
+        return self.graph.degree(node)
+    
+    def average_degree(self):
+        node_degrees = []
+        for node in self.graph.nodes:
+            node_degrees.append(self.node_degree(node))
+        
+        return sum(node_degrees) / len(node_degrees)
 
 class Simulation:
     def __init__(self, model, graph, num_frames=20):
