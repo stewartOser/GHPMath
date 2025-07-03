@@ -267,6 +267,22 @@ class Simulation:
             new_colors = [self.model.state_colors[self.frames[self.frame_idx[0]][n]] for n in self.graph.nodes]
             nodes.set_color(new_colors)
             frame_slider.valtext.set_text(f"{self.frame_idx[0] + 1}/{self.num_frames}")
+            # --- Dynamic state counts appended to stats ---
+            if self.display_stats:
+                # Compute current state counts
+                current_state_counts = {state.name: 0 for state in self.model.states}
+                for n in self.graph.nodes:
+                    current_state_counts[self.frames[self.frame_idx[0]][n]] += 1
+                count_lines = [f"{state}: {count}" for state, count in current_state_counts.items()]
+                # Use a persistent text object for stats
+                if not hasattr(self, "_stats_text"):
+                    self._stats_text = text_ax.text(0, 0.4, "", va='top', fontsize=10, family='monospace')
+
+                existing_text = self._stats_text.get_text()
+                split_index = existing_text.find("\n\nCurrent States:\n")
+                base_text = existing_text if split_index == -1 else existing_text[:split_index]
+                state_block = "Current States:\n" + "\n".join(count_lines)
+                self._stats_text.set_text(base_text + "\n\n" + state_block)
             fig.canvas.draw_idle()
 
         # === Slider and Buttons positioning ===
