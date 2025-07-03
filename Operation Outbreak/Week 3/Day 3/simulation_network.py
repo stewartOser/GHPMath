@@ -86,6 +86,14 @@ class Network:
     def get_nx_graph(self):
         return self.graph
     
+    def random_node(self, state_name=None):
+        """Returns a random node from the graph, optionally filtering by state."""
+        if state_name is None:
+            return random.choice(list(self.graph.nodes))
+        else:
+            filtered_nodes = [n for n in self.graph.nodes if self.graph.nodes[n]['state'] == state_name]
+            return random.choice(filtered_nodes) if filtered_nodes else None
+    
     def __getattr__(self, name):
         try:
             return getattr(self.graph, name)
