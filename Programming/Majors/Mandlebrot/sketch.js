@@ -2,6 +2,7 @@
 // grill it, wrap it in a bun, and eat it?
 
 // Mandlebrotwurst
+let slider;
 
 var iter = 500;
 var pal = [];
@@ -14,7 +15,7 @@ let imax = 2;
 
 function setPallette() {
   // thats called camelCase, remember
-  pal.push([0, 0, 100]);
+  pal.push([0, 0, 0]);
   for (var i = 1; i < 20; i++) {
     var a = [20*i + 4*i, 20*i, 100+40*i];
     pal.push(a);
@@ -40,6 +41,8 @@ function iterate(real, imag) {
 }
 
 function setup() {
+  slider = createSlider(500, 1000, 500, 10);
+  slider.position(width/2 - slider.length / 2, 10);
   createCanvas(800, 800);
   noLoop();
 
@@ -48,6 +51,13 @@ function setup() {
 
 function draw() {
   background(0);
+
+  slider.input(function() {
+    iter = slider.value();
+    draw(); // Redraw the Mandelbrot set
+  });
+
+  // console.log(slider.value(), iter);
 
   var tw = rmax - rmin;
   var th = imax - imin;
@@ -65,5 +75,39 @@ function draw() {
 
       point(col, row);
     }
+  }
+}
+
+function mousePressed() {
+  if (mouseY > 0) {
+    a1 = rmin + (mouseX/800)*(rmax-rmin);
+    a2 = imax - (mouseY/800)*(imax-imin);
+  }
+}
+
+function mouseReleased() {
+  if (mouseY > 0) {
+    b1 = rmin + (mouseX/800)*(rmax-rmin);
+    b2 = imax - (mouseY/800)*(imax-imin);
+
+    if (a1 > b1) {
+      let t = b1;
+      b1 = a1;
+      a1 = t;
+    }
+
+    if (a2 > b2) {
+      let t = a2;
+      a2 = b2;
+      b2 = t;
+    }
+
+    b2 = b1 + (a2-a1);
+    rmin = a1;
+    rmax = b1;
+    imin = a2;
+    imax = b2;
+
+    draw();
   }
 }
