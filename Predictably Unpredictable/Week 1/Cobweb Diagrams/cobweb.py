@@ -79,4 +79,4 @@ if __name__ == "__main__":
     
     plot = CobwebPlot(func)
     plot.load_gui()
-    plot.render()
+    plot.render(0.2)
