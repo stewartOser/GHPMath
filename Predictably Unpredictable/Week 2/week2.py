@@ -17,15 +17,9 @@ class AnimatePlot():
         self.start = float(input("r starts at? "))
         self.end = float(input("r ends at? "))
         
-        self.lines = np.empty((self.endN-self.startN+1, 1))
-        self.nVals = np.array([self.n_vals] * (len(self.n_vals)-1))
-        
     def generate_plot(self, frame):
         x = self.x_init
-        self.lines = np.empty((self.endN-self.startN, 1))
-
-        
-        print(self.x_vals)
+        [line_collection.remove() for line_collection in self.ax.collections]
         
         for i in range(1, self.startN):
             x = frame*x*(1 - x)
@@ -33,24 +27,19 @@ class AnimatePlot():
         for i in range(len(self.n_vals)):
             x = frame*x*(1 - x)
             self.x_vals[i]= x
-            
-        for x in self.x_vals:
-            x_list = [x] * (len(self.n_vals)-1)
-            l_vals = np.array(x_list)
-            self.lines = np.append(self.lines, l_vals.reshape(-1, 1), axis=1)
-            
-        self.lines = self.lines[:,1:]
-        print(self.lines)
                 
         self.line.set_data(self.n_vals, self.x_vals)
-        self.lineVals.set_data(self.nVals.flatten(), self.lines.flatten())
         self.ax.set_title(f"R = {round(frame, 7)}")
-        return self.line, self.lineVals,
+        
+        for x in self.x_vals:
+            self.ax.hlines(x, self.startN, self.endN, color='red')
+            print(x)
+            
+        return self.line,
             
     def render(self,x_init=0.1):
         self.x_init = x_init
         self.line, = self.ax.plot(self.n_vals, self.x_vals, 'bo-')
-        self.lineVals, = self.ax.plot([], [], 'r-')
         self.ax.set_xlim(self.startN, self.endN)
         self.ax.set_ylim(0, 1)
 
