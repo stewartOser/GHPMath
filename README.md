@@ -11,7 +11,8 @@
 - Stewart
 
 ## Current Week's Schedule
-<img width="711" height="488" alt="Screenshot 2026-06-14 at 11 24 20 AM" src="https://github.com/user-attachments/assets/ca07f95c-bf2e-45ba-b0c1-2032ca98b0ea" />
+<img width="1007" height="644" alt="Screenshot 2026-06-22 at 7 52 53 AM" src="https://github.com/user-attachments/assets/2beae2d8-11dd-4680-908e-8a008a1efba0" />
+
 
 ## IMPORTANT EVENTS
 Electives Fair @ PAC - Monday, after lunch
