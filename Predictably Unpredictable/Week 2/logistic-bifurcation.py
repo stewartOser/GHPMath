@@ -6,7 +6,7 @@ WIDTH = 1250
 HEIGHT = 600
 
 class AnimatePlot():
-    def __init__(self, startN=0, endN=100):
+    def __init__(self, r_range=(0, 4), n_range=(900,1000)):
         self.fig, (self.ax, self.bif_ax) = plt.subplots(
             1,
             2,
@@ -14,14 +14,14 @@ class AnimatePlot():
             dpi=100,
             gridspec_kw={"width_ratios": [1, 1]},
         )
-        self.startN = startN
-        self.endN = endN
+        self.startN = n_range[0]
+        self.endN = n_range[1]
         self.n_vals = np.array([i for i in range(self.startN, self.endN+1)])
         self.x_vals = [0] * len(self.n_vals)
         self.x_init = 0.1
         
-        self.start = float(input("r starts at? "))
-        self.end = float(input("r ends at? "))
+        self.start = r_range[0]
+        self.end = r_range[1]
         # Accumulated points for the bifurcation diagram.
         # These are never cleared, so the right-hand plot gradually fills in.
         self.bif_r_vals = []
@@ -88,7 +88,7 @@ class AnimatePlot():
         plt.show(block=True)
         
 def reanimate():
-    plot = AnimatePlot(startN=900, endN=1000)
+    plot = AnimatePlot(r_range=(0,4), n_range=(900, 1000))
     # In the render command, the first argument is x_init.
     # The default is 0.1.
     plot.render(x_init=0.1)
