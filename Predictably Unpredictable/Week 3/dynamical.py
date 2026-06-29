@@ -5,7 +5,7 @@ P = 10          # initial population
 
 k = 0.6         # rate constant
 N = 20          # carrying capacity
-h = 3           # harvesting rate
+h = 0           # harvesting rate
 
 dt = 0.01       # time step
 t_final = 15    # final time
