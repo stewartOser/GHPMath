@@ -94,6 +94,3 @@ def reanimate():
     plot.render(x_init=0.1)
 
 plot = reanimate()
-
-plot.ax.callbacks.connect('xlim_changed', reanimate)
-plot.ax.callbacks.connect('ylim_changed', reanimate)
