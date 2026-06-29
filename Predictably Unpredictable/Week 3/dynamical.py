@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 t = 0           # initial time
-P = 10          # initial population
+P = 1          # initial population
 
 k = 0.6         # rate constant
 N = 20          # carrying capacity
