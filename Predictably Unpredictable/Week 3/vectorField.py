@@ -59,6 +59,7 @@ class VectorField:
         self.ani = FuncAnimation(self.fig, self.plot_path, frames=1000, interval=5, blit=False)
         plt.show(block=True)
 
+# for you, the parameters into VectorField are just numbers, not lists  
 vec = VectorField(-2, 5)
 vec.draw_plot()
 vec.render()
