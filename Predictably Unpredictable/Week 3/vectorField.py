@@ -3,17 +3,21 @@ import numpy as np
 from matplotlib.animation import FuncAnimation
 
 def dx(x, y):
-    return x + y
+    return 1*x - 0.1*x*y
 
 def dy(x, y):
-    return x*y
+    return -1*y + 1*x*y
 
 class VectorField:
-    def __init__(self, x, y):
+    def __init__(self, x, y, lowLimX, lowLimY, upLimX, upLimY):
+        self.lowLimX = lowLimX
+        self.lowLimY = lowLimY
+        self.upLimX = upLimX
+        self.upLimY = upLimY
         self.lineStartX = x
         self.lineStartY = y
-        self.x = np.linspace(-10, 10, 50)
-        self.y = np.linspace(-10, 10, 50)
+        self.x = np.linspace(self.lowLimX, self.upLimX, 50)
+        self.y = np.linspace(self.lowLimY, self.upLimY, 50)
         self.X, self.Y = np.meshgrid(self.x, self.y)
         
         self.U = dx(self.X, self.Y)
@@ -46,20 +50,20 @@ class VectorField:
             x += dx(x, y) * dt
             y += dy(x, y) * dt
             
-            if x > 10 or y > 10:
+            if x > self.upLimX or y > self.upLimY:
                 break
             
-            if x < -10 or y < -10:
+            if x < self.lowLimX or y < self.lowLimY:
                 break
         
         self.line.set_data(self.x_lst, self.y_lst)
         return self.line
         
     def render(self):
-        self.ani = FuncAnimation(self.fig, self.plot_path, frames=1000, interval=5, blit=False)
+        self.ani = FuncAnimation(self.fig, self.plot_path, frames=1000, interval=5, blit=False, repeat=False)
         plt.show(block=True)
 
 # for you, the parameters into VectorField are just numbers, not lists  
-vec = VectorField(-2, 5)
+vec = VectorField(4, 2, 0, 0, 5.25, 50)
 vec.draw_plot()
 vec.render()
