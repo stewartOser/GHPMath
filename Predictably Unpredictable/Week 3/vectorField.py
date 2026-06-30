@@ -3,7 +3,7 @@ import numpy as np
 from matplotlib.animation import FuncAnimation
 
 def dx(x, y):
-    return 1*x - 0.1*x*y
+    return 1*x - 1*x*y
 
 def dy(x, y):
     return -1*y + 1*x*y
@@ -60,10 +60,10 @@ class VectorField:
         return self.line
         
     def render(self):
-        self.ani = FuncAnimation(self.fig, self.plot_path, frames=1000, interval=5, blit=False, repeat=False)
+        self.ani = FuncAnimation(self.fig, self.plot_path, frames=10000, interval=5, blit=False, repeat=False)
         plt.show(block=True)
 
 # for you, the parameters into VectorField are just numbers, not lists  
-vec = VectorField(4, 2, 0, 0, 5.25, 50)
+vec = VectorField(4, 2, 0, 0, 4.5, 4.5)
 vec.draw_plot()
 vec.render()
