@@ -16,8 +16,8 @@ class VectorField:
         self.upLimY = upLimY
         self.lineStartX = x
         self.lineStartY = y
-        self.x = np.linspace(self.lowLimX, self.upLimX, 50)
-        self.y = np.linspace(self.lowLimY, self.upLimY, 50)
+        self.x = np.linspace(self.lowLimX, self.upLimX, 25)
+        self.y = np.linspace(self.lowLimY, self.upLimY, 25)
         self.X, self.Y = np.meshgrid(self.x, self.y)
         
         self.U = dx(self.X, self.Y)

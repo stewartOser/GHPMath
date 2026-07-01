@@ -6,6 +6,9 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.GLUT import *
 from pygame.locals import *
+import sys
+
+glutInit(sys.argv)
 
 alpha = 5
 beta = -10

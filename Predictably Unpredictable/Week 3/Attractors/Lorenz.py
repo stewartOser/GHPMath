@@ -5,6 +5,9 @@ from OpenGL.GLU import *
 from OpenGL.GLUT import *
 import random as r
 import math
+import sys
+
+glutInit(sys.argv)
 
 sigma = 10
 rho = 28
