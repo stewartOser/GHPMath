@@ -38,9 +38,9 @@ class Floater:
         self.dy = (b*self.x + c*self.y - self.x*self.z) * df
         self.dz = (-self.z - self.x*self.y) * df
         
-        self.x += self.dx
         self.y += self.dy
-        self.z += self.dz
+        self.z += self.dz 
+        self.x += self.dx
         
         self.trail.append((self.x, self.y, self.z))
         
