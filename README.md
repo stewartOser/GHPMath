@@ -11,7 +11,8 @@
 - Stewart
 
 ## Current Week's Schedule
-<img width="955" height="429" alt="Screenshot 2026-06-29 at 8 01 04 PM" src="https://github.com/user-attachments/assets/d8c9c87d-12e5-4e37-84a9-93dfef97b12f" />
+<img width="778" height="569" alt="Screenshot 2026-07-07 at 8 55 09 AM" src="https://github.com/user-attachments/assets/53399102-13fd-42e6-8359-349cd8fb5586" />
+
 
 
 ## IMPORTANT EVENTS
